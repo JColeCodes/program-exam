@@ -1,0 +1,21 @@
+:root {
+    /* Not final colors */
+    --main-color: blue;
+    --secondary-color: teal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+    font-size: 18px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+button {
+    font-family: 'Source Code Pro', monospace;
+}
