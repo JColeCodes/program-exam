@@ -1,11 +1,11 @@
 :root {
-    --main-color: #035bbc;
-    --secondary-color: #b56ba8;
-    --correct-color: #2d8f42;
-    --wrong-color: #a92317;
-    --gray-color: #b2b2b2;
-    --darkest-color: #060100;
-    --lightest-color: #f4efdf;
+    --main-color: #035bbc; /* Main Color */
+    --secondary-color: #b56ba8; /* Secondary Color - Button Hover */
+    --correct-color: #2d8f42; /* Correct Answer Color */
+    --wrong-color: #a92317; /* Wrong Answer Color */
+    --gray-color: #b2b2b2; /* Mid-Gray Color */
+    --lightest-color: #e3e3e3; /* Light-Gray Color */
+    --darkest-color: #060100; /* Darkest Color - Text */
 }
 
 * {
@@ -21,20 +21,24 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     color: var(--darkest-color);
 }
-a, button { transition: 0.5s all ease-out; }
 
+ /* Header */
 header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 20px;
 }
+
+ /* Links */
+a, button { transition: 0.5s all ease-out; }
 a {
     color: var(--main-color);
     text-decoration: none;
 }
 a:hover { color: var(--secondary-color); }
 
+ /* Main Body */
 .quiz-body, .score-body {
     padding: 30px;
     width: 1160px; max-width: calc(100% - 60px);
@@ -43,14 +47,19 @@ a:hover { color: var(--secondary-color); }
 #intro.quiz-body {
     text-align: center;
 }
-.quiz-body h1, .quiz-body h2, .score-body h1 {
+
+ /* Text */
+.quiz-body h1, .quiz-body h2, .quiz-body h3, .score-body h1 {
     font-size: 2em;
     line-height: 1;
     margin-bottom: 10px;
 }
+.quiz-body h3 { font-size: 1.6em; }
 .quiz-body p {
     margin: 5px 0;
 }
+
+ /* Buttons and Answers */
 .quiz-body button, .score-body button {
     font-family: 'Source Code Pro', monospace;
     background-color: var(--main-color);
@@ -63,25 +72,24 @@ a:hover { color: var(--secondary-color); }
     text-align: left;
     word-break: break-word;
 }
-.quiz-body button { display: flex; flex-wrap: wrap; justify-content: flex-start; }
+.quiz-body button, .show-answer { display: flex; flex-wrap: wrap; justify-content: flex-start; }
 #intro.quiz-body button { margin: 5px auto; }
 .quiz-body button:hover, .score-body button:hover {
     background-color: var(--secondary-color);
     cursor: pointer;
 }
-
-.quiz-body button span.letter {
+.quiz-body button span.letter, .show-answer span.letter {
     align-items: stretch;
     margin: 0 10px 0 0;
 }
-.quiz-body button span.answer {
+.quiz-body button span.answer, .show-answer span.answer {
     flex: 1;
 }
-
 .quiz-body ul {
     list-style-type: none;
 }
 
+ /* Submit Score Form */
 .quiz-body input {
     border: 1px solid var(--gray-color);
     margin: 5px auto;
@@ -92,6 +100,26 @@ a:hover { color: var(--secondary-color); }
     text-transform: uppercase;
 }
 
+ /* Correct & Wrong Answers */
+.show-answer {
+    background-color: var(--lightest-color);
+    font-family: 'Source Code Pro', monospace;
+    margin: 5px 0;
+    padding: 15px;
+    font-size: 0.9em;
+    border-radius: 15px;
+    word-break: break-word;
+}
+.correct-answer {
+    background-color: var(--correct-color);
+    color: #ffffff;
+}
+.wrong-answer {
+    background-color: var(--wrong-color);
+    color: #ffffff;
+}
+
+ /* High Scores List */
 ol#scores-list{
     list-style: none;
     counter-reset: high-scores;
@@ -120,6 +148,7 @@ ol#scores-list li::before {
     opacity: 0.8;
 }
 
+ /* Hidden */
 .hidden {
     display: none;
 }

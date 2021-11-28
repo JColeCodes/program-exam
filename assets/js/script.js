@@ -12,7 +12,8 @@ var question01 = {
     b: "let",
     c: "for",
     d: "forEach",
-    e: "obelisk"
+    e: "obelisk",
+    userAnswer: null
 }
 var question02 = {
     question: "Which of the following is the correct way to call a random number?",
@@ -20,7 +21,8 @@ var question02 = {
     b: "var randomNum = Random.math();",
     c: "Math(random) = randomNum;",
     d: "Random(math) = randomNum;",
-    e: "jambalaya"
+    e: "jambalaya",
+    userAnswer: null
 }
 var question03 = {
     question: "Which of the following is NOT a JavaScript library?",
@@ -28,7 +30,8 @@ var question03 = {
     b: "React",
     c: "PHP",
     d: "D3",
-    e: "except"
+    e: "except",
+    userAnswer: null
 }
 var question04 = {
     question: "A boolean can give the output...",
@@ -36,7 +39,8 @@ var question04 = {
     b: "false",
     c: "0",
     d: "1",
-    e: "cobbler"
+    e: "cobbler",
+    userAnswer: null
 }
 var question05 = {
     question: "var fruits = ['Apples', 'Bananas', 'Cherries']; is an example of a/an...",
@@ -44,7 +48,8 @@ var question05 = {
     b: "string",
     c: "object",
     d: "array",
-    e: "ending"
+    e: "ending",
+    userAnswer: null
 }
 var question06 = {
     question: "If you wanted to iterate by 1, which way would NOT work?",
@@ -52,7 +57,8 @@ var question06 = {
     b: "i += 1;",
     c: "i++;",
     d: "i = 1+;",
-    e: "oddity"
+    e: "oddity",
+    userAnswer: null
 }
 var question07 = {
     question: "How do // and /**/ comments differ?",
@@ -60,7 +66,8 @@ var question07 = {
     b: "// comments only single lines, /**/ comments multiple lines",
     c: "// is used only in CSS, while /**/ is used in JavaScript",
     d: "// is used in JavaScript, while /**/ is used only in CSS",
-    e: "tribute"
+    e: "tribute",
+    userAnswer: null
 }
 var question08 = {
     question: "What is this code saying?: if (i === 1 || i > 3){...};",
@@ -68,7 +75,8 @@ var question08 = {
     b: "if i is equal in value and type to 1 and i is greater than 3",
     c: "if i is equal in value and type to 1 or i is greater than 3",
     d: "if i is equal only in value to 1 or i is greater than 3",
-    e: "cooked"
+    e: "cooked",
+    userAnswer: null
 }
 var question09 = {
     question: "How would you link a JavaScript file in your HTML file?",
@@ -76,7 +84,8 @@ var question09 = {
     b: "<script href=\"file.js\"></script>",
     c: "<link rel=\"script\" href=\"file.js\" />",
     d: "<link rel=\"script\" src=\"file.js\" />",
-    e: "safari"
+    e: "safari",
+    userAnswer: null
 }
 var question10 = {
     question: "If you wanted a button to run a function called 'FunctionName' on click, which could potentially work?",
@@ -84,7 +93,8 @@ var question10 = {
     b: "<button onClick=\"FunctionName\" id=\"btn\">Click Me</button> in HTML",
     c: "document.querySelector(\"#btn\").onClick(\"click\", FunctionName()); in JavaScript",
     d: "document.querySelector(\"#btn\").addEventListener(click, FunctionName); in JavaScript",
-    e: "archipelago"
+    e: "archipelago",
+    userAnswer: null
 }
 var questions = [question01, question02, question03, question04, question05, question06, question07, question08, question09, question10];
 var questionNumber = 0;
@@ -97,7 +107,7 @@ var timerLen = (questions.length * 10); // You get 10 seconds for every question
 var highScores = []; // Empty array to save high scores in
 
 // I'm not going to blatantly put the answers in the source code, you've gotta work for that
-var decrypt = function() {
+var decrypt = function(questionNumber) {
     var breakIt = questions[questionNumber].e.split("");
     breakIt = breakIt.sort()[0]
     return breakIt;
@@ -151,8 +161,7 @@ var displayQuestion = function() {
             var answerText = document.createElement("span");
             answerText.className = "answer";
             answerText.textContent = currentQuestion[answer];
-
-            // quizAnswer.textContent = answer + ". " + currentQuestion[answer];
+            // Did it this way so I could apply flexbox, but not apply any code in the answers
 
             // Append to page
             quizAnswerBody.appendChild(quizAnswerLi);
@@ -160,9 +169,12 @@ var displayQuestion = function() {
             quizAnswer.appendChild(answerText);
             quizAnswerLi.appendChild(quizAnswer);
 
-
+            quizAnswer.addEventListener("click", function(){
+                currentQuestion.userAnswer = answer;
+            });
+            
             // What happens when a button is clicked
-            if (decrypt() !== answer) {
+            if (decrypt(questionNumber) !== answer) {
                 quizAnswer.addEventListener("click", wrongAnswer);
             } else {
                 quizAnswer.addEventListener("click", correctAnswer);
@@ -197,7 +209,6 @@ var endQuiz = function() {
         score += timerLen;
     }
     
-
     // Hide last question
     var lastQuestion = document.querySelector("div[data-question='" + questionNumber + "']");
     lastQuestion.className = "hidden";
@@ -213,7 +224,7 @@ var endQuiz = function() {
     endMessage.textContent = "You got a score of " + score + ".";
 
     var enterInitials = document.createElement("p");
-    enterInitials.innerHTML = "Please enter your initials to save your score: <form><input type='text' name='initials' maxlength='3' /><button id='submit-initials' type='submit'>Save Score</button></form>";
+    enterInitials.innerHTML = "Please enter your initials to save your score: <form><input type='text' name='initials' maxlength='3' required /><button id='submit-initials' type='submit'>Save Score</button></form>";
 
     // Append to page
     mainBody.appendChild(quizBody);
@@ -222,7 +233,68 @@ var endQuiz = function() {
     quizBody.appendChild(enterInitials);
 
     var submitButton = document.querySelector("#submit-initials");
-    submitButton.addEventListener("click", saveScore);
+    var initialsInput = document.querySelector("input[name='initials']");
+    initialsInput.addEventListener("input", evt => {
+        var initials = initialsInput.value.trim();
+        if (initials) {
+            submitButton.disabled = false;
+            submitButton.addEventListener("click", saveScore);
+        } else {
+            submitButton.disabled = true;
+        }
+    });
+    //submitButton.addEventListener("click", saveScore);
+
+    displayAnswers();
+};
+
+var displayAnswers = function() {
+    for (i = 0; i < questions.length; i++) {
+        var tempQuestionNumber = i + 1;
+        var showQuestion = questions[i];
+
+        var showQuestionBody = document.createElement("div");
+        showQuestionBody.className = "quiz-body";
+
+        // Display Question
+        var quizQuestion = document.createElement("h3");
+        quizQuestion.textContent = tempQuestionNumber + ". " + showQuestion.question;
+        var quizAnswerBody = document.createElement("ul");
+
+        // Append to page
+        mainBody.appendChild(showQuestionBody);
+        showQuestionBody.appendChild(quizQuestion);
+        showQuestionBody.appendChild(quizAnswerBody);
+
+        // Loop through each answer
+        for (const answer in showQuestion) {
+            if (answer != "question" && answer != "e" && answer != "userAnswer") { // Don't include the question
+                // Make each answer a list
+                var quizAnswer = document.createElement("li");
+                quizAnswer.className = "show-answer";
+                
+                var answerLetter = document.createElement("span");
+                answerLetter.className = "letter";
+                answerLetter.textContent = answer + ".";
+                var answerText = document.createElement("span");
+                answerText.className = "answer";
+                answerText.textContent = showQuestion[answer];
+
+                // Apply correct or incorrect classes
+                if (showQuestion.userAnswer == decrypt(i) && showQuestion.userAnswer == answer) {
+                    quizAnswer.className += " correct-answer";
+                } else if (showQuestion.userAnswer !== decrypt(i) && showQuestion.userAnswer == answer) {
+                    quizAnswer.className += " wrong-answer";
+                }
+
+                //Append to page
+                showQuestionBody.appendChild(quizAnswerBody);
+                quizAnswer.appendChild(answerLetter);
+                quizAnswer.appendChild(answerText);
+                quizAnswerBody.appendChild(quizAnswer);
+            }
+        }
+    }
 };
 
 // Timer
