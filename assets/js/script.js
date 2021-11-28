@@ -14,7 +14,7 @@ var question01 = {
     d: "forEach",
     e: "obelisk",
     userAnswer: null
-}
+};
 var question02 = {
     question: "Which of the following is the correct way to call a random number?",
     a: "var randomNum = Math.random();",
@@ -23,7 +23,7 @@ var question02 = {
     d: "Random(math) = randomNum;",
     e: "jambalaya",
     userAnswer: null
-}
+};
 var question03 = {
     question: "Which of the following is NOT a JavaScript library?",
     a: "jQuery",
@@ -32,7 +32,7 @@ var question03 = {
     d: "D3",
     e: "except",
     userAnswer: null
-}
+};
 var question04 = {
     question: "A boolean can give the output...",
     a: "truth",
@@ -41,7 +41,7 @@ var question04 = {
     d: "1",
     e: "cobbler",
     userAnswer: null
-}
+};
 var question05 = {
     question: "var fruits = ['Apples', 'Bananas', 'Cherries']; is an example of a/an...",
     a: "function",
@@ -50,7 +50,7 @@ var question05 = {
     d: "array",
     e: "ending",
     userAnswer: null
-}
+};
 var question06 = {
     question: "If you wanted to iterate by 1, which way would NOT work?",
     a: "i = i + 1;",
@@ -59,7 +59,7 @@ var question06 = {
     d: "i = 1+;",
     e: "oddity",
     userAnswer: null
-}
+};
 var question07 = {
     question: "How do // and /**/ comments differ?",
     a: "// comments multiple lines, /**/ comments only single lines",
@@ -68,7 +68,7 @@ var question07 = {
     d: "// is used in JavaScript, while /**/ is used only in CSS",
     e: "tribute",
     userAnswer: null
-}
+};
 var question08 = {
     question: "What is this code saying?: if (i === 1 || i > 3){...};",
     a: "if i is equal in only value to 1 and i is greater than 3",
@@ -77,7 +77,7 @@ var question08 = {
     d: "if i is equal only in value to 1 or i is greater than 3",
     e: "cooked",
     userAnswer: null
-}
+};
 var question09 = {
     question: "How would you link a JavaScript file in your HTML file?",
     a: "<script src=\"file.js\"></script>",
@@ -86,7 +86,7 @@ var question09 = {
     d: "<link rel=\"script\" src=\"file.js\" />",
     e: "safari",
     userAnswer: null
-}
+};
 var question10 = {
     question: "If you wanted a button to run a function called 'FunctionName' on click, which could potentially work?",
     a: "<button onclick=\"FunctionName()\" id=\"btn\">Click Me</button> in HTML",
@@ -95,7 +95,7 @@ var question10 = {
     d: "document.querySelector(\"#btn\").addEventListener(click, FunctionName); in JavaScript",
     e: "archipelago",
     userAnswer: null
-}
+};
 var questions = [question01, question02, question03, question04, question05, question06, question07, question08, question09, question10];
 var questionNumber = 0;
 
@@ -111,16 +111,16 @@ var decrypt = function(questionNumber) {
     var breakIt = questions[questionNumber].e.split("");
     breakIt = breakIt.sort()[0]
     return breakIt;
-}
+};
 
 // What happens when answer is wrong or right
 var wrongAnswer = function() {
     timerLen -= 10; // Decrease time if wrong
     wrongAnswers ++; // Keep score of how many wrong answers because if you get ALL of them wrong, you don't get any points, come on now.
-}
+};
 var correctAnswer = function() {
     score += 10; // Increase score if right
-}
+};
 
 // Display the question and answers
 var displayQuestion = function() {
