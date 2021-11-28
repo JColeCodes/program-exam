@@ -1,8 +1,9 @@
 // Find HTML DOM
 var mainBody = document.querySelector("#main-content");
+var scoreBody = document.querySelector("#score-content");
 var introPage = document.querySelector("#intro");
+var scoreList = document.querySelector("#scores-list");
 var timerText = document.querySelector("#timer");
-var startButton = document.querySelector("#start-quiz");
 
 // Assign Questions and Answers
 var question01 = {
@@ -93,6 +94,7 @@ var wrongAnswers = 0;
 var score = 0;
 var timeInterval = null;
 var timerLen = (questions.length * 10); // You get 10 seconds for every question
+var highScores = []; // Empty array to save high scores in
 
 // I'm not going to blatantly put the answers in the source code, you've gotta work for that
 var decrypt = function() {
@@ -141,12 +143,23 @@ var displayQuestion = function() {
             // Set data attribute to a, b, c, or d
             quizAnswer.setAttribute("data-answer", answer);
 
+
             // Display the answer button
-            quizAnswer.textContent = answer + ". " + currentQuestion[answer];
+            var answerLetter = document.createElement("span");
+            answerLetter.className = "letter";
+            answerLetter.textContent = answer + ".";
+            var answerText = document.createElement("span");
+            answerText.className = "answer";
+            answerText.textContent = currentQuestion[answer];
+
+            // quizAnswer.textContent = answer + ". " + currentQuestion[answer];
 
             // Append to page
             quizAnswerBody.appendChild(quizAnswerLi);
+            quizAnswer.appendChild(answerLetter);
+            quizAnswer.appendChild(answerText);
             quizAnswerLi.appendChild(quizAnswer);
+
 
             // What happens when a button is clicked
             if (decrypt() !== answer) {
@@ -200,13 +213,16 @@ var endQuiz = function() {
     endMessage.textContent = "You got a score of " + score + ".";
 
     var enterInitials = document.createElement("p");
-    enterInitials.innerHTML = "Please enter your initials to save your score: <form><input type='text' name='initials' /><button class='submit-initials' type='submit'>Save Score</button>";
+    enterInitials.innerHTML = "Please enter your initials to save your score: <form><input type='text' name='initials' maxlength='3' /><button id='submit-initials' type='submit'>Save Score</button></form>";
 
     // Append to page
     mainBody.appendChild(quizBody);
     quizBody.appendChild(endTitle);
     quizBody.appendChild(endMessage);
     quizBody.appendChild(enterInitials);
+
+    var submitButton = document.querySelector("#submit-initials");
+    submitButton.addEventListener("click", saveScore);
 };
 
 // Timer
@@ -235,3 +251,58 @@ var timer = function() {
     // Start displaying questions
     displayQuestion();
 };
+
+// Save High Score
+var saveScore = function(event) {
+    event.preventDefault();
+
+    // Ensures all Initals are in only
+    var initials = document.querySelector("input[name='initials']").value.toUpperCase();
+
+    // High score object stores initials and score
+    var highScoreObj = {
+        initials: initials,
+        score: score
+    };
+    highScores.push(highScoreObj);
+    localStorage.setItem("highScores", JSON.stringify(highScores)); // Local Storage
+
+    window.location.href = "./highscore.html"; // Go to high score page when score is submitted
+};
+
+// Clear High Score
+var clearScore = function() {
+    highScores = []; // Empty Array
+    localStorage.setItem("highScores", JSON.stringify(highScores)); // Local Storage
+    loadScore();
+    window.location.href = "./highscore.html";
+};
+
+// Load High Score
+var loadScore = function() {
+    var savedScores = localStorage.getItem("highScores");
+
+    if (!savedScores) {
+        return false;
+    }
+
+    savedScores = JSON.parse(savedScores);
+
+    // Sort from highest to lowest scores
+    savedScores.sort(function(a, b){
+        return b.score - a.score 
+    });
+
+    highScores = savedScores; // Make sure the preivous scores are loaded onto the array
+
+    if (scoreBody) { // Only runs loop on page with "scoreBody"
+        for (i = 0; i < savedScores.length; i++) {
+            var scoreLi = document.createElement("li");
+            var currScore = savedScores[i];
+            scoreLi.textContent = currScore.initials + " - " + currScore.score;
+
+            scoreList.append(scoreLi);
+        }
+    }
+};
+loadScore();

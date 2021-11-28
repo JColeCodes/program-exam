@@ -1,5 +1,4 @@
 :root {
-    /* Not final colors */
     --main-color: #035bbc;
     --secondary-color: #b56ba8;
     --correct-color: #2d8f42;
@@ -36,7 +35,7 @@ a {
 }
 a:hover { color: var(--secondary-color); }
 
-.quiz-body {
+.quiz-body, .score-body {
     padding: 30px;
     width: 1160px; max-width: calc(100% - 60px);
     margin: 0 auto;
@@ -44,7 +43,7 @@ a:hover { color: var(--secondary-color); }
 #intro.quiz-body {
     text-align: center;
 }
-.quiz-body h1, .quiz-body h2 {
+.quiz-body h1, .quiz-body h2, .score-body h1 {
     font-size: 2em;
     line-height: 1;
     margin-bottom: 10px;
@@ -52,20 +51,31 @@ a:hover { color: var(--secondary-color); }
 .quiz-body p {
     margin: 5px 0;
 }
-.quiz-body button {
+.quiz-body button, .score-body button {
     font-family: 'Source Code Pro', monospace;
     background-color: var(--main-color);
     border: 0;
-    margin: 5px auto;
+    margin: 5px 0;
     padding: 15px;
     color: #ffffff;
     font-size: 1em;
     border-radius: 15px;
     text-align: left;
+    word-break: break-word;
 }
-.quiz-body button:hover {
+.quiz-body button { display: flex; flex-wrap: wrap; justify-content: flex-start; }
+#intro.quiz-body button { margin: 5px auto; }
+.quiz-body button:hover, .score-body button:hover {
     background-color: var(--secondary-color);
     cursor: pointer;
+}
+
+.quiz-body button span.letter {
+    align-items: stretch;
+    margin: 0 10px 0 0;
+}
+.quiz-body button span.answer {
+    flex: 1;
 }
 
 .quiz-body ul {
@@ -79,6 +89,35 @@ a:hover { color: var(--secondary-color); }
     color: var(--main-color);
     font-size: 1em;
     border-radius: 15px;
+    text-transform: uppercase;
+}
+
+ol#scores-list{
+    list-style: none;
+    counter-reset: high-scores;
+}
+ol#scores-list li {
+    padding: 15px;
+    margin: 5px;
+    background-color: rgba(3,91,188,0.3);
+    font-weight: bold;
+    border-radius: 15px;
+    counter-increment: high-scores;
+}
+ol#scores-list li::before {
+    content: counter(high-scores) ".";
+    background-color: #ffffff;
+    color: var(--main-color);
+    padding: 10px;
+    border-radius: 50%;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin: -5px 10px 0 0;
+    float: left;
+    font-weight: bold;
+    font-size: 0.8em;
+    opacity: 0.8;
 }
 
 .hidden {

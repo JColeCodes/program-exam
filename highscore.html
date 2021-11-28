@@ -13,9 +13,19 @@
 <body>
     <header>
         <nav>
-            <a href="index.html">Back to quiz</a>
+            <a href="./index.html">Back to quiz</a>
         </nav>
     </header>
+    <main id="score-content" class="score-body">
+        <h1>High Scores</h1>
+        <!-- High scores will go into this ordered list -->
+        <ol id="scores-list"></ol>
+
+        <!-- Go back to index -->
+        <button id="go-back" onclick="window.location.href='./index.html';">Go Back</button>
+        <!-- Clear Score function runs when button is clicked-->
+        <button id="clear-scores" onclick="clearScore()">Clear High Scores</button>
+    </main>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
