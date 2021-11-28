@@ -115,7 +115,11 @@ var decrypt = function(questionNumber) {
 
 // What happens when answer is wrong or right
 var wrongAnswer = function() {
-    timerLen -= 10; // Decrease time if wrong
+    if (timerLen > 9) {
+        timerLen -= 10; // Decrease time if wrong
+    } else {
+        timerLen = 0; // If less than 9 seconds, end quiz because all remaining time will be subtracted
+    }
     wrongAnswers ++; // Keep score of how many wrong answers because if you get ALL of them wrong, you don't get any points, come on now.
 };
 var correctAnswer = function() {
